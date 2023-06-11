@@ -18,7 +18,7 @@ exports.handler = async (event) => {
     try {
       const params = JSON.parse(event.body)
       const invoiceId = params.invoiceId
-      const responseg = await axios.get(
+      const infoRequest = await axios.get(
         storeAddress + invoiceId,
         {
             headers: {
@@ -27,9 +27,11 @@ exports.handler = async (event) => {
             }
         }
       ) 
-    const orderInfo = responseg.data
+    const orderInfo = infoRequest.data
     console.log(orderInfo)
-    const responseu = await axios.get(
+    // less than 24 hours old
+    console.log((Date.now() - orderInfo.metadata.timestamp) > 86400000)
+    const paymentRequest = await axios.get(
       storeAddress + invoiceId + `/payment-methods`,
       {
           headers: {
@@ -38,8 +40,8 @@ exports.handler = async (event) => {
           }
       }
     ) 
-    const orderInfou = responseu.data
-    console.log(orderInfou)
+    const paymentInfo = paymentRequest.data
+    console.log(paymentInfo)
     return {
       statusCode: 200,
       body: ''
