@@ -5,7 +5,7 @@ const mongoDBPassword = process.env.mongoDBPassword
 const mongoServerLocation = process.env.mongoServerLocation
 const { MongoClient, ServerApiVersion } = require('mongodb')
 // const Joi = require("joi")
-const crypto = require('crypto');
+const crypto = require('crypto')
 // const hri = require('human-readable-ids').hri
 const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
 const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
@@ -45,10 +45,12 @@ exports.handler = async (event) => {
       }
     ) 
     const paymentInfo = paymentRequest.data
-    console.log(paymentInfo)
-    console.log(orderInfo)
     const docInfo = {
-      passphrase: 'yum', 
+      passphrase: orderInfo.metadata.numberArray,
+      allOrderInformation: {
+        paymentInfo,
+        orderInfo
+      } 
     }
     const doc = docInfo
     await collection.insertOne(doc)
