@@ -46,6 +46,11 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     delete orderInfo.storeId
+    const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
+    if(exist !== null){
+      console.log('error: "account already exist"')
+      return {statusCode: 500, body: 'account already exist' }
+    }
     const docInfo = {
       passphrase: orderInfo.metadata.numberArray,
       allOrderInformation: {
