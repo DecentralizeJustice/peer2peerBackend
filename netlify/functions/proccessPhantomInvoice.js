@@ -29,10 +29,10 @@ exports.handler = async (event) => {
       ) 
     const orderInfo = infoRequest.data
     // less than 24 hours old
-    if ((Date.now() - orderInfo.metadata.timestamp) > 86400000) {
+    if ((Date.now() - orderInfo.metadata.timestamp) > 86400000 || orderInfo.status !== 'Settled') {
       return {
         statusCode: 500,
-        body: 'invoice is too old'
+        body: 'invoice is too old or not settled'
       }
     }
     const paymentRequest = await axios.get(
@@ -45,6 +45,7 @@ exports.handler = async (event) => {
       }
     ) 
     const paymentInfo = paymentRequest.data
+    delete orderInfo.storeId
     const docInfo = {
       passphrase: orderInfo.metadata.numberArray,
       allOrderInformation: {
