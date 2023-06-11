@@ -1,5 +1,5 @@
-// const BTCpayKey = process.env.BTCpayKey
-// const BTCpayStore = process.env.BTCpayStore 
+const BTCpayKey = process.env.BTCpayKey
+const BTCpayStore = process.env.BTCpayStore 
 const axios = require("axios")
 // const mongoDBPassword = process.env.mongoDBPassword
 //const mongoServerLocation = process.env.mongoServerLocation
@@ -8,7 +8,7 @@ const Joi = require("joi")
 const crypto = require('crypto');
 const hri = require('human-readable-ids').hri
 // const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
-// const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
+const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
 const fs = require('fs')
 const path = require("path")
 const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
