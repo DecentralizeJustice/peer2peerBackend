@@ -1,24 +1,25 @@
 const BTCpayKey = process.env.BTCpayKey
 const BTCpayStore = process.env.BTCpayStore 
 const axios = require("axios")
-// const mongoDBPassword = process.env.mongoDBPassword
-//const mongoServerLocation = process.env.mongoServerLocation
-// const { MongoClient, ServerApiVersion } = require('mongodb')
-const Joi = require("joi")
+const mongoDBPassword = process.env.mongoDBPassword
+const mongoServerLocation = process.env.mongoServerLocation
+const { MongoClient, ServerApiVersion } = require('mongodb')
+// const Joi = require("joi")
 const crypto = require('crypto');
-const hri = require('human-readable-ids').hri
-// const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
+// const hri = require('human-readable-ids').hri
+const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
 const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
-const fs = require('fs')
+/* const fs = require('fs')
 const path = require("path")
-const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
-const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
-// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
+const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt") */
+// const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
+const collection = client.db("real").collection("orders")
 exports.handler = async (event) => {
     try {
       const invoiceId = JSON.parse(event.body).invoiceId
       const infoRequest = await axios.get(
-        storeAddress + invoiceId + 'f',
+        storeAddress + invoiceId,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -46,6 +47,11 @@ exports.handler = async (event) => {
     const paymentInfo = paymentRequest.data
     console.log(paymentInfo)
     console.log(orderInfo)
+    const docInfo = {
+      passphrase: 'yum', 
+    }
+    const doc = docInfo
+    await collection.insertOne(doc)
     return {
       statusCode: 200,
       body: ''
