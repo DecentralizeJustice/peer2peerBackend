@@ -18,7 +18,7 @@ exports.handler = async (event) => {
     try {
       const invoiceId = JSON.parse(event.body).invoiceId
       const infoRequest = await axios.get(
-        storeAddress + invoiceId,
+        storeAddress + invoiceId + 'f',
         {
             headers: {
                 'Content-Type': 'application/json',
