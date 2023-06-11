@@ -35,7 +35,6 @@ exports.handler = async (event) => {
     }
     } catch (error) {
       console.log(error)
-      await client.close()
       return {
         statusCode: 500,
         body: ''
