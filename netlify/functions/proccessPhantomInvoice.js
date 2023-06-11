@@ -7,8 +7,8 @@ const axios = require("axios")
 const Joi = require("joi")
 const crypto = require('crypto');
 const hri = require('human-readable-ids').hri
-const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
-const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
+// const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
+// const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
 const fs = require('fs')
 const path = require("path")
 const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
