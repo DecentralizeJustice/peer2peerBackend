@@ -51,7 +51,10 @@ exports.handler = async (event) => {
       allOrderInformation: {
         paymentInfo,
         orderInfo
-      } 
+      },
+      customerChat: [],
+      phoneMessages: []
+
     }
     const doc = docInfo
     await collection.insertOne(doc)
