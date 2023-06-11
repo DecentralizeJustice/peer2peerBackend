@@ -16,8 +16,7 @@ const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
 // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 exports.handler = async (event) => {
     try {
-      const params = JSON.parse(event.body)
-      const invoiceId = params.invoiceId
+      const invoiceId = JSON.parse(event.body).invoiceId
       const infoRequest = await axios.get(
         storeAddress + invoiceId,
         {
@@ -28,9 +27,13 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-    console.log(orderInfo)
     // less than 24 hours old
-    console.log((Date.now() - orderInfo.metadata.timestamp) > 86400000)
+    if ((Date.now() - orderInfo.metadata.timestamp) > 86400000) {
+      return {
+        statusCode: 500,
+        body: 'invoice is too old'
+      }
+    }
     const paymentRequest = await axios.get(
       storeAddress + invoiceId + `/payment-methods`,
       {
@@ -42,14 +45,13 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     console.log(paymentInfo)
+    console.log(orderInfo)
     return {
       statusCode: 200,
       body: ''
     }
     } catch (error) {
       console.log(error)
-      console.log(BTCpayKey)
-      console.log(BTCpayStore)
       return {
         statusCode: 500,
         body: ''
