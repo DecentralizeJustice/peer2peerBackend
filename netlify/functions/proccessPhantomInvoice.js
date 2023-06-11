@@ -13,11 +13,22 @@ const fs = require('fs')
 const path = require("path")
 const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
 const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 exports.handler = async (event) => {
-  // const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
     try {
       const params = JSON.parse(event.body)
-      console.log(params)
+      const invoiceId = params.invoiceId
+      const response = await axios.get(
+        storeAddress + invoiceId,
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': BTCpayKey
+            }
+        }
+      ) 
+    const orderInfo = response.data
+    console.log(orderInfo)
     return {
       statusCode: 200,
       body: ''
