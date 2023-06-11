@@ -18,7 +18,7 @@ exports.handler = async (event) => {
     try {
       const params = JSON.parse(event.body)
       const invoiceId = params.invoiceId
-      const response = await axios.get(
+      const responseg = await axios.get(
         storeAddress + invoiceId,
         {
             headers: {
@@ -27,8 +27,19 @@ exports.handler = async (event) => {
             }
         }
       ) 
-    const orderInfo = response.data
+    const orderInfo = responseg.data
     console.log(orderInfo)
+    const responseu = await axios.get(
+      storeAddress + invoiceId + `/payment-methods`,
+      {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': BTCpayKey
+          }
+      }
+    ) 
+    const orderInfou = responseu.data
+    console.log(orderInfou)
     return {
       statusCode: 200,
       body: ''
