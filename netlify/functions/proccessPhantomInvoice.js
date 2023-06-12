@@ -52,7 +52,7 @@ exports.handler = async (event) => {
       return {statusCode: 500, body: 'account already exist' }
     }
     const firstMessage = {
-      sender: dgoon,
+      sender: 'dgoon',
       timestamp: Date.now(),
       message: `Hi Friend. I will work on getting your rental ready to go for you. This process
       can takeup to 24 hours. I will message you here once your rental is ready.
