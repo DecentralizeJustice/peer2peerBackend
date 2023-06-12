@@ -51,13 +51,20 @@ exports.handler = async (event) => {
       console.log('error: "account already exist"')
       return {statusCode: 500, body: 'account already exist' }
     }
+    const firstMessage = {
+      sender: dgoon,
+      timestamp: Date.now(),
+      message: `Hi Friend. I will work on getting your rental ready to go for you. This process
+      can takeup to 24 hours. I will message you here once your rental is ready.
+      Please let me know if you have any questions!`
+    }
     const docInfo = {
       passphrase: orderInfo.metadata.numberArray,
       allOrderInformation: {
         paymentInfo,
         orderInfo
       },
-      customerChat: [],
+      customerChat: [ firstMessage ],
       phoneMessages: []
 
     }
