@@ -15,6 +15,7 @@ const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt") */
 // const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 const collection = client.db("real").collection("orders")
+const allPhoneInfo = client.db("real").collection("phonesInfo")
 exports.handler = async (event) => {
     try {
       const invoiceId = JSON.parse(event.body).invoiceId
@@ -46,7 +47,7 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     delete orderInfo.storeId
-    await process1Service(orderInfo, paymentRequest)
+    await process1Service(orderInfo, paymentInfo)
     
     return {
       statusCode: 200,
@@ -62,7 +63,9 @@ exports.handler = async (event) => {
 
 }
 async function process1Service(orderInfo, paymentRequest) {
-  console.log(orderInfo, paymentRequest)
+  const phoneInfoCollection = await allPhoneInfo.find().toArray()
+  console.log(phoneInfoCollection)
+  // console.log(orderInfo, paymentRequest)
 /*   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
     if(exist !== null){
       console.log('error: "account already exist"')
