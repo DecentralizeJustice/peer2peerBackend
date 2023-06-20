@@ -65,6 +65,10 @@ exports.handler = async (event) => {
 async function process1Service(orderInfo, paymentRequest) {
   const phoneInfoCollection = await allPhoneInfo.find().toArray()
   console.log(phoneInfoCollection)
+  const chosenPhone = ''
+  for (let phone of phoneInfoCollection) {
+    console.log(phone)
+  }
   // console.log(orderInfo, paymentRequest)
 /*   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
     if(exist !== null){
