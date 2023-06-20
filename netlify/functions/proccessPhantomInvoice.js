@@ -68,6 +68,9 @@ async function process1Service(orderInfo, paymentRequest) {
   const chosenService = orderInfo.metadata.purchase.service
   for (let phone of phoneInfoCollection) {
     console.log(phone)
+    if (!phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all")) {
+      console.log({ sim: 'sim1', phoneName: phone.phone })
+    }
   }
   if (chosenPhone === '') {
     throw new Error('no service available');
