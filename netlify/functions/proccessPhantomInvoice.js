@@ -66,6 +66,7 @@ async function process1Service(orderInfo, paymentRequest) {
   const phoneInfoCollection = await allPhoneInfo.find().toArray()
   console.log(phoneInfoCollection)
   const chosenPhone = ''
+  console.log(orderInfo)
   for (let phone of phoneInfoCollection) {
     console.log(phone)
   }
