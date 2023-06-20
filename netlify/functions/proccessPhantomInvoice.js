@@ -46,7 +46,24 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     delete orderInfo.storeId
-    const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
+    await process1Service(orderInfo, paymentRequest)
+    
+    return {
+      statusCode: 200,
+      body: ''
+    }
+    } catch (error) {
+      console.log(error)
+      return {
+        statusCode: 500,
+        body: ''
+      }
+    }
+
+}
+async function process1Service(orderInfo, paymentRequest) {
+  console.log(orderInfo, paymentRequest)
+/*   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
     if(exist !== null){
       console.log('error: "account already exist"')
       return {statusCode: 500, body: 'account already exist' }
@@ -69,17 +86,5 @@ exports.handler = async (event) => {
 
     }
     const doc = docInfo
-    await collection.insertOne(doc)
-    return {
-      statusCode: 200,
-      body: ''
-    }
-    } catch (error) {
-      console.log(error)
-      return {
-        statusCode: 500,
-        body: ''
-      }
-    }
-
+    await collection.insertOne(doc) */
 }
