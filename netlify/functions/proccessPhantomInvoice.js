@@ -80,7 +80,7 @@ async function process1Service(orderInfo, paymentRequest) {
   const correctSim = chosenPhone.sim
   await phoneInfoCollection.updateOne(
         { "phone" : chosenPhone.phoneName },
-        { $push: { correctSim.usedServices: chosenService } }
+        { $push: { correctSim.$.usedServices: chosenService } }
       )
   // console.log(orderInfo, paymentRequest)
 /*   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
