@@ -82,7 +82,7 @@ async function process1Service(orderInfo, paymentRequest) {
     { "phone" : chosenPhone.phoneName },
     {
       $push: { 
-          `${correctSim}.usedServices`: chosenService
+        sim1: { usedServices: chosenService }
         } 
     }
   )
