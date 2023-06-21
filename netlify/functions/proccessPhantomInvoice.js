@@ -63,7 +63,7 @@ exports.handler = async (event) => {
     }
 
 }
-async function process1Service(orderInfo, paymentRequest) {
+async function process1Service(orderInfo, paymentInfo) {
   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
   if(exist !== null){
     console.log('error: "account already exist"')
