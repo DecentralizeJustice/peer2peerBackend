@@ -82,9 +82,7 @@ async function process1Service(orderInfo, paymentRequest) {
   await allPhoneInfo.updateOne(
     { "phone" : chosenPhone.phoneName },
     {
-      $push: { 
-        sim1: { usedServices: chosenService }
-        } 
+      $push: { "sim1.usedServices" : "tester" } 
     }
   )
   // console.log(orderInfo, paymentRequest)
