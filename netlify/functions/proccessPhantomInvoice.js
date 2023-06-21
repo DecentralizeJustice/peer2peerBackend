@@ -67,7 +67,6 @@ async function process1Service(orderInfo, paymentRequest) {
   let chosenPhone = ''
   const chosenService = orderInfo.metadata.purchase.service
   for (let phone of phoneInfoCollection) {
-    console.log(phone)
     if (!phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all")) {
       chosenPhone = { sim: 'sim1', phoneName: phone.phone }
     }
@@ -78,6 +77,11 @@ async function process1Service(orderInfo, paymentRequest) {
   if (chosenPhone === '') {
     throw new Error('no service available');
   }
+  const correctSim = chosenPhone.sim
+  await phoneInfoCollection.updateOne(
+        { "phone" : chosenPhone.phoneName },
+        { $push: { correctSim.usedServices: chosenService } }
+      )
   // console.log(orderInfo, paymentRequest)
 /*   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
     if(exist !== null){
