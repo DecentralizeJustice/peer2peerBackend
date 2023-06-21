@@ -78,11 +78,10 @@ async function process1Service(orderInfo, paymentRequest) {
     throw new Error('no service available');
   }
   const correctSim = chosenPhone.sim + '.usedServices'
-  console.log(correctSim)
   await allPhoneInfo.updateOne(
     { "phone" : chosenPhone.phoneName },
     {
-      $push: { correctSim : chosenService } 
+      $push: { `${correctSim}` : chosenService } 
     }
   )
   // console.log(orderInfo, paymentRequest)
