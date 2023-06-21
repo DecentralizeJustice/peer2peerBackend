@@ -69,7 +69,10 @@ async function process1Service(orderInfo, paymentRequest) {
   for (let phone of phoneInfoCollection) {
     console.log(phone)
     if (!phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all")) {
-      console.log({ sim: 'sim1', phoneName: phone.phone })
+      chosenPhone = { sim: 'sim1', phoneName: phone.phone }
+    }
+    if (!phone.sim2.usedServices.includes(chosenService) && !phone.sim2.usedServices.includes("all")) {
+      chosenPhone = { sim: 'sim2', phoneName: phone.phone }
     }
   }
   if (chosenPhone === '') {
