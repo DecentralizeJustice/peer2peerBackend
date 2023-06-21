@@ -66,12 +66,11 @@ async function process1Service(orderInfo, paymentRequest) {
   const phoneInfoCollection = await allPhoneInfo.find().toArray()
   let chosenPhone = ''
   const chosenService = orderInfo.metadata.purchase.service
-  //add phone number check
   for (let phone of phoneInfoCollection) {
-    if (!phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all")) {
+    if (!phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all") && phone.sim1.phoneNumber !== "") {
       chosenPhone = { sim: 'sim1', phoneName: phone.phone }
     }
-    if (!phone.sim2.usedServices.includes(chosenService) && !phone.sim2.usedServices.includes("all")) {
+    if (!phone.sim2.usedServices.includes(chosenService) && !phone.sim2.usedServices.includes("all") && phone.sim2.phoneNumber !== "") {
       chosenPhone = { sim: 'sim2', phoneName: phone.phone }
     }
   }
