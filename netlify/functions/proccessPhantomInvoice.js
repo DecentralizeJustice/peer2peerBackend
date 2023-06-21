@@ -79,7 +79,7 @@ async function process1Service(orderInfo, paymentRequest) {
     throw new Error('no service available');
   }
   const correctSim = chosenPhone.sim
-  await phoneInfoCollection.updateOne(
+  await allPhoneInfo.updateOne(
     { "phone" : chosenPhone.phoneName },
     {
       $push: { 
