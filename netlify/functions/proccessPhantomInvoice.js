@@ -64,7 +64,7 @@ exports.handler = async (event) => {
 }
 async function process1Service(orderInfo, paymentRequest) {
   const phoneInfoCollection = await allPhoneInfo.find().toArray()
-  const chosenPhone = ''
+  let chosenPhone = ''
   const chosenService = orderInfo.metadata.purchase.service
   for (let phone of phoneInfoCollection) {
     console.log(phone)
