@@ -77,13 +77,12 @@ async function process1Service(orderInfo, paymentRequest) {
   if (chosenPhone === '') {
     throw new Error('no service available');
   }
-  const correctSim = chosenPhone.sim + '.usedServices'
-  await allPhoneInfo.updateOne(
-    { "phone" : chosenPhone.phoneName },
-    {
-      $push: { `${correctSim}` : chosenService } 
-    }
-  )
+  if (chosenPhone.sim === 'sim1') {
+    await allPhoneInfo.updateOne( { "phone" : chosenPhone.phoneName }, { $push: { 'sim1.usedServices' : chosenService } })
+  } else {
+    await allPhoneInfo.updateOne( { "phone" : chosenPhone.phoneName }, { $push: { 'sim2.usedServices' : chosenService } })
+  }
+
   // console.log(orderInfo, paymentRequest)
 /*   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
     if(exist !== null){
