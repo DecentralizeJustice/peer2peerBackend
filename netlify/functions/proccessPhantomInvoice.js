@@ -47,6 +47,7 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     delete orderInfo.storeId
+      
     await process1Service(orderInfo, paymentInfo)
     
     return {
@@ -63,6 +64,11 @@ exports.handler = async (event) => {
 
 }
 async function process1Service(orderInfo, paymentRequest) {
+  const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
+  if(exist !== null){
+    console.log('error: "account already exist"')
+    return {statusCode: 500, body: 'account already exist' }
+  }
   const phoneInfoCollection = await allPhoneInfo.find().toArray()
   let chosenPhone = ''
   const chosenService = orderInfo.metadata.purchase.service
@@ -83,29 +89,23 @@ async function process1Service(orderInfo, paymentRequest) {
     await allPhoneInfo.updateOne( { "phone" : chosenPhone.phoneName }, { $push: { 'sim2.usedServices' : chosenService } })
   }
 
-  // console.log(orderInfo, paymentRequest)
-/*   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
-    if(exist !== null){
-      console.log('error: "account already exist"')
-      return {statusCode: 500, body: 'account already exist' }
-    }
-    const firstMessage = {
-      sender: 'dgoon',
-      timestamp: Date.now(),
-      message: `Hi Friend. I will work on getting your rental ready to go for you. This process
-      can takeup to 24 hours. I will message you here once your rental is ready.
-      Please let me know if you have any questions!`
-    }
-    const docInfo = {
-      passphrase: orderInfo.metadata.numberArray,
-      allOrderInformation: {
-        paymentInfo,
-        orderInfo
-      },
-      customerChat: [ firstMessage ],
-      phoneMessages: []
+  const firstMessage = {
+    sender: 'dgoon',
+    timestamp: Date.now(),
+    message: `Hi Friend. You should see the number for your service rental to the right. If you have any questions or need anything, shoot 
+    me a message here.`
+  }
+  const docInfo = {
+    passphrase: orderInfo.metadata.numberArray,
+    allOrderInformation: {
+      paymentInfo,
+      orderInfo
+    },
+    customerChat: [ firstMessage ],
+    chosenPhone
 
-    }
-    const doc = docInfo
-    await collection.insertOne(doc) */
+  }
+  const doc = docInfo
+  await collection.insertOne(doc)
+  return true
 }
