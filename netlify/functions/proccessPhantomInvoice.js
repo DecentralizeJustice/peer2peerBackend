@@ -47,11 +47,26 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     delete orderInfo.storeId
-    console.log(orderInfo)
-    // await process1Service(orderInfo, paymentInfo)
+    console.log(orderInfo.metadata.purchase.serviceType)
+
+    if (orderInfo.metadata.purchase.serviceType === '1service') {
+      await process1Service(orderInfo, paymentInfo)
+      return {
+        statusCode: 500,
+        body: ''
+      }
+    }
     
-    return {
-      statusCode: 200,
+    if (orderInfo.metadata.purchase.serviceType === '1month') {
+      await process1month(orderInfo, paymentInfo)
+      return {
+        statusCode: 200,
+        body: ''
+      }
+    }
+    
+      return {
+      statusCode: 500,
       body: ''
     }
     } catch (error) {
@@ -63,6 +78,32 @@ exports.handler = async (event) => {
     }
 
 }
+async function process1month(orderInfo, paymentInfo) {
+  const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
+  if(exist !== null){
+    console.log('error: "account already exist"')
+    return {statusCode: 500, body: 'account already exist' }
+  }
+
+  const firstMessage = {
+    sender: 'dgoon',
+    timestamp: Date.now(),
+    message: `Hi Friend. I have to configure your monthly rental. This configuration can take up to 24 hours. Message me here if you have any questions!`
+  }
+  const docInfo = {
+    passphrase: orderInfo.metadata.numberArray,
+    allOrderInformation: {
+      paymentInfo,
+      orderInfo
+    },
+    customerChat: [ firstMessage ]
+  }
+  const doc = docInfo
+  await collection.insertOne(doc)
+  return true
+}
+
+
 async function process1Service(orderInfo, paymentInfo) {
   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
   if(exist !== null){
