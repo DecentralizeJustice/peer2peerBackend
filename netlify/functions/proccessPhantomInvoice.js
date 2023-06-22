@@ -76,7 +76,6 @@ exports.handler = async (event) => {
         body: ''
       }
     }
-
 }
 async function process1month(orderInfo, paymentInfo) {
   const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
