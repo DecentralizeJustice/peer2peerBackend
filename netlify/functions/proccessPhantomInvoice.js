@@ -47,8 +47,8 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     delete orderInfo.storeId
-      
-    await process1Service(orderInfo, paymentInfo)
+    console.log(orderInfo)
+    // await process1Service(orderInfo, paymentInfo)
     
     return {
       statusCode: 200,
