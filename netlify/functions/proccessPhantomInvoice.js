@@ -52,7 +52,7 @@ exports.handler = async (event) => {
     if (orderInfo.metadata.purchase.serviceType === '1service') {
       await process1Service(orderInfo, paymentInfo)
       return {
-        statusCode: 500,
+        statusCode: 200,
         body: ''
       }
     }
