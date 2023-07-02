@@ -87,6 +87,7 @@ async function process1month(orderInfo, paymentInfo) {
     sender: 'dgoon',
     timestamp: Date.now(),
     message: `Hi Friend. I have to configure your monthly rental. This configuration can take up to 24 hours. 
+    If you want a longer rental let me know here. If you want to renew your rental, shoot me a message her 5 days before your rental is up.
     Message me here if you have any questions! You can also check on your order here: `+ getCheckOrderLink(orderInfo.metadata.numberArray)
   }
   const docInfo = {
