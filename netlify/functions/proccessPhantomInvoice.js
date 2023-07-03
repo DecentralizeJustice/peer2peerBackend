@@ -114,10 +114,10 @@ async function process1Service(orderInfo, paymentInfo) {
   let chosenPhone = ''
   const chosenService = orderInfo.metadata.purchase.service
   for (let phone of phoneInfoCollection) {
-    if (!phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all") && phone.sim1.phoneNumber !== "") {
+    if (phone.sim1.phoneNumber !== "" && !phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all")) {
       chosenPhone = { sim: 'sim1', phoneName: phone.phone }
     }
-    if (!phone.sim2.usedServices.includes(chosenService) && !phone.sim2.usedServices.includes("all") && phone.sim2.phoneNumber !== "") {
+    if (phone.sim2.phoneNumber !== "" && !phone.sim2.usedServices.includes(chosenService) && !phone.sim2.usedServices.includes("all")) {
       chosenPhone = { sim: 'sim2', phoneName: phone.phone }
     }
   }
