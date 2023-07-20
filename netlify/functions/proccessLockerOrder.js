@@ -58,7 +58,7 @@ exports.handler = async (event) => {
       message: `Hi Friend.  I will approve your order within 24 hours and it will go to our orderbook. 
       You can send me a message here if you have any questions or need to change your order. 
       You also must check on your order every other day.
-      You can also check on your order using this link:` + getCheckOrderLink(orderInfo.metadata.info.passphraseArray)
+      You can also check on your order using this link: ` + getCheckOrderLink(orderInfo.metadata.info.passphraseArray)
     }
 
     const docInfo = {
