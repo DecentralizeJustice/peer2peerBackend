@@ -5,7 +5,7 @@ const mongoDBPassword = process.env.mongoDBPassword
 const mongoServerLocation = process.env.mongoServerLocation
 const { MongoClient, ServerApiVersion } = require('mongodb')
 // const Joi = require("joi")
-const crypto = require('crypto')
+const { createHash } = require('crypto')
 // const hri = require('human-readable-ids').hri
 const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
 const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
@@ -50,11 +50,12 @@ exports.handler = async (event) => {
     await delete orderInfo.storeId
     console.log(orderInfo)
     console.log(paymentInfo)
-    // const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
-    // if(exist !== null){
-    //   console.log('error: "account already exist"')
-    //   return {statusCode: 500, body: 'account already exist' }
-    // }
+    const exist = await collection.findOne( { id: orderInfo.id })
+    if(exist !== null){
+      console.log('error: "invoice already exist"')
+      return {statusCode: 500, body: '' }
+    }
+    console.log(createHash('sha256').update(orderInfo.id).digest('hex'))
   
     // const firstMessage = {
     //   sender: 'dgoon',
