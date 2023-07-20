@@ -32,9 +32,10 @@ exports.handler = async (event) => {
     console.log(Date.now() - Number(orderInfo.metadata.timestamp))
     // less than 24 hours old
     if ((Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || orderInfo.status !== 'Settled') {
+      console.log('invoice is too old or not settled')
       return {
         statusCode: 500,
-        body: 'invoice is too old or not settled'
+        body: ''
       }
     }
     const paymentRequest = await axios.get(
