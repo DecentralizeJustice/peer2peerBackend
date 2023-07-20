@@ -5,8 +5,8 @@ const mongoDBPassword = process.env.mongoDBPassword
 const mongoServerLocation = process.env.mongoServerLocation
 const { MongoClient, ServerApiVersion } = require('mongodb')
 // const Joi = require("joi")
-const { createHash } = require('crypto')
-// const hri = require('human-readable-ids').hri
+// const { createHash } = require('crypto')
+const hri = require('human-readable-ids').hri
 const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
 const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
 const fs = require('fs')
@@ -55,7 +55,8 @@ exports.handler = async (event) => {
       console.log('error: "invoice already exist"')
       return {statusCode: 500, body: '' }
     }
-    console.log(createHash('sha256').update(orderInfo.id).digest('hex'))
+    const orderId = hri.random()
+    console.log(orderId)
   
     // const firstMessage = {
     //   sender: 'dgoon',
