@@ -15,7 +15,6 @@ const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
 const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 const collection = client.db("real").collection("orders")
-const allPhoneInfo = client.db("real").collection("phonesInfo")
 exports.handler = async (event) => {
     try {
       const invoiceId = JSON.parse(event.body).invoiceId
@@ -50,13 +49,11 @@ exports.handler = async (event) => {
     await delete orderInfo.storeId
     console.log(orderInfo)
     console.log(paymentInfo)
-    const exist = await collection.findOne( { id: orderInfo.id })
+    const exist = await collection.findOne( { invoiceId: invoiceId })
     if(exist !== null){
       console.log('error: "invoice already exist"')
       return {statusCode: 500, body: '' }
     }
-    const orderId = hri.random()
-    console.log(orderId)
   
     // const firstMessage = {
     //   sender: 'dgoon',
@@ -65,16 +62,18 @@ exports.handler = async (event) => {
     //   If you want a longer rental let me know here. If you want to renew your rental, shoot me a message her 5 days before your rental is up.
     //   Message me here if you have any questions! You can also check on your order here: `+ getCheckOrderLink(orderInfo.metadata.numberArray)
     // }
-    // const docInfo = {
-    //   passphrase: orderInfo.metadata.numberArray,
-    //   allOrderInformation: {
-    //     paymentInfo,
-    //     orderInfo
-    //   },
-    //   customerChat: [ firstMessage ]
-    // }
-    // const doc = docInfo
-    // await collection.insertOne(doc)
+    const docInfo = {
+      orderId: hri.random(),
+      invoiceId: invoiceId,
+      shopperPassphrase: orderInfo.metadata.info.passphraseArray,
+      allOrderInformation: {
+        paymentInfo,
+        orderInfo
+      },
+      status: ['pending approval']
+    }
+    const doc = docInfo
+    await collection.insertOne(doc)
     return {
       statusCode: 200,
       body: ''
