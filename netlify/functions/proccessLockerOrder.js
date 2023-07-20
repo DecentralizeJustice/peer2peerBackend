@@ -29,9 +29,9 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-    console.log(orderInfo.metadata.timestamp)
+
     // less than 24 hours old
-    if ((Date.now() - orderInfo.timestamp) > 86400000 || orderInfo.status !== 'Settled') {
+    if ((Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || orderInfo.status !== 'Settled') {
       return {
         statusCode: 500,
         body: 'invoice is too old or not settled'
@@ -53,9 +53,6 @@ exports.handler = async (event) => {
       console.log('error: "invoice already exist"')
       return {statusCode: 500, body: '' }
     }
-
-
-
 
     const firstMessage = {
       sender: 'dgoon',
