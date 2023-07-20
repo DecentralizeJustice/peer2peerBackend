@@ -47,8 +47,6 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     await delete orderInfo.storeId
-    console.log(orderInfo)
-    console.log(paymentInfo)
     const exist = await collection.findOne( { invoiceId: invoiceId })
     if(exist !== null){
       console.log('error: "invoice already exist"')
@@ -65,7 +63,7 @@ exports.handler = async (event) => {
     const docInfo = {
       orderId: hri.random(),
       invoiceId: invoiceId,
-      shopperPassphrase: orderInfo.metadata.info.passphraseArray,
+      shopperPassphrase: orderInfo.metadata.info.passphraseArray.toString(),
       allOrderInformation: {
         paymentInfo,
         orderInfo
