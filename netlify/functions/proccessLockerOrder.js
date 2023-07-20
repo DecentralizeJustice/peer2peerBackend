@@ -14,7 +14,7 @@ const path = require("path")
 const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
 const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
-const collection = client.db("real").collection("orders")
+const collection = client.db("orders").collection("lockerOrders")
 exports.handler = async (event) => {
     try {
       const invoiceId = JSON.parse(event.body).invoiceId
