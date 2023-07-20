@@ -98,8 +98,7 @@ function getCheckOrderLink(numberArray){
 }
 function numberArrayToWordArray (numberArray) {
   const wordArray = []
-  console.log(numberArray)
-  const splitNumberArray = numberArray.split(",")
+  const splitNumberArray = numberArray
   const length = splitNumberArray.length
   for (var i=0;i<length; i++) {
     const wordToAdd = words[splitNumberArray[i]]
