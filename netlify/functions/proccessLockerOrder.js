@@ -29,9 +29,9 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-    console.log(orderInfo)
+
     // less than 24 hours old
-/*     if ((Date.now() - orderInfo.metadata.timestamp) > 86400000 || orderInfo.status !== 'Settled') {
+    if ((Date.now() - orderInfo.timestamp) > 86400000 || orderInfo.status !== 'Settled') {
       return {
         statusCode: 500,
         body: 'invoice is too old or not settled'
@@ -47,25 +47,33 @@ exports.handler = async (event) => {
       }
     ) 
     const paymentInfo = paymentRequest.data
-    delete orderInfo.storeId
-
-    if (orderInfo.metadata.purchase.serviceType === '1service') {
-      await process1Service(orderInfo, paymentInfo)
-      return {
-        statusCode: 200,
-        body: ''
-      }
-    }
-    
-    if (orderInfo.metadata.purchase.serviceType === '1month') {
-      await process1month(orderInfo, paymentInfo)
-      return {
-        statusCode: 200,
-        body: ''
-      }
-    } */
-    
-      return {
+    await delete orderInfo.storeId
+    console.log(orderInfo)
+    console.log(paymentInfo)
+    // const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
+    // if(exist !== null){
+    //   console.log('error: "account already exist"')
+    //   return {statusCode: 500, body: 'account already exist' }
+    // }
+  
+    // const firstMessage = {
+    //   sender: 'dgoon',
+    //   timestamp: Date.now(),
+    //   message: `Hi Friend. I have to configure your monthly rental. This configuration can take up to 24 hours. 
+    //   If you want a longer rental let me know here. If you want to renew your rental, shoot me a message her 5 days before your rental is up.
+    //   Message me here if you have any questions! You can also check on your order here: `+ getCheckOrderLink(orderInfo.metadata.numberArray)
+    // }
+    // const docInfo = {
+    //   passphrase: orderInfo.metadata.numberArray,
+    //   allOrderInformation: {
+    //     paymentInfo,
+    //     orderInfo
+    //   },
+    //   customerChat: [ firstMessage ]
+    // }
+    // const doc = docInfo
+    // await collection.insertOne(doc)
+    return {
       statusCode: 200,
       body: ''
     }
@@ -77,32 +85,7 @@ exports.handler = async (event) => {
       }
     }
 }
-async function process1month(orderInfo, paymentInfo) {
-  const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
-  if(exist !== null){
-    console.log('error: "account already exist"')
-    return {statusCode: 500, body: 'account already exist' }
-  }
 
-  const firstMessage = {
-    sender: 'dgoon',
-    timestamp: Date.now(),
-    message: `Hi Friend. I have to configure your monthly rental. This configuration can take up to 24 hours. 
-    If you want a longer rental let me know here. If you want to renew your rental, shoot me a message her 5 days before your rental is up.
-    Message me here if you have any questions! You can also check on your order here: `+ getCheckOrderLink(orderInfo.metadata.numberArray)
-  }
-  const docInfo = {
-    passphrase: orderInfo.metadata.numberArray,
-    allOrderInformation: {
-      paymentInfo,
-      orderInfo
-    },
-    customerChat: [ firstMessage ]
-  }
-  const doc = docInfo
-  await collection.insertOne(doc)
-  return true
-}
 
 
 async function process1Service(orderInfo, paymentInfo) {
