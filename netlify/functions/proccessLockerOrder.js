@@ -15,6 +15,7 @@ const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
 const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 const collection = client.db("orders").collection("lockerOrders")
+// const chatCollection = client.db("chats").collection("justShopperChats")
 exports.handler = async (event) => {
     try {
       const invoiceId = JSON.parse(event.body).invoiceId
@@ -28,7 +29,7 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-
+    console.log(orderInfo.timestamp)
     // less than 24 hours old
     if ((Date.now() - orderInfo.timestamp) > 86400000 || orderInfo.status !== 'Settled') {
       return {
@@ -52,14 +53,18 @@ exports.handler = async (event) => {
       console.log('error: "invoice already exist"')
       return {statusCode: 500, body: '' }
     }
-  
-    // const firstMessage = {
-    //   sender: 'dgoon',
-    //   timestamp: Date.now(),
-    //   message: `Hi Friend. I have to configure your monthly rental. This configuration can take up to 24 hours. 
-    //   If you want a longer rental let me know here. If you want to renew your rental, shoot me a message her 5 days before your rental is up.
-    //   Message me here if you have any questions! You can also check on your order here: `+ getCheckOrderLink(orderInfo.metadata.numberArray)
-    // }
+
+
+
+
+    const firstMessage = {
+      sender: 'dgoon',
+      timestamp: Date.now(),
+      message: `Hi Friend.  I will approve your order within 24 hours and it will go to our orderbook. 
+      You can send me a message here if you have any questions or need to change your order. 
+      You can also check on your order using this link:` + getCheckOrderLink(orderInfo.metadata.numberArray)
+    }
+
     const docInfo = {
       orderId: hri.random(),
       invoiceId: invoiceId,
@@ -68,10 +73,10 @@ exports.handler = async (event) => {
         paymentInfo,
         orderInfo
       },
-      status: ['pending approval']
+      status: ['pending approval'],
+      shopperChat: [ firstMessage ],
     }
-    const doc = docInfo
-    await collection.insertOne(doc)
+    await collection.insertOne(docInfo)
     return {
       statusCode: 200,
       body: ''
@@ -86,56 +91,9 @@ exports.handler = async (event) => {
 }
 
 
-
-async function process1Service(orderInfo, paymentInfo) {
-  const exist = await collection.findOne( { passphrase: orderInfo.metadata.numberArray })
-  if(exist !== null){
-    console.log('error: "account already exist"')
-    return {statusCode: 500, body: 'account already exist' }
-  }
-  const phoneInfoCollection = await allPhoneInfo.find().toArray()
-  let chosenPhone = ''
-  const chosenService = orderInfo.metadata.purchase.service
-  for (let phone of phoneInfoCollection) {
-    if (phone.sim1.phoneNumber.length > 3 && !phone.sim1.usedServices.includes(chosenService) && !phone.sim1.usedServices.includes("all")) {
-      chosenPhone = { sim: 'sim1', phoneName: phone.phone }
-    }
-    if (phone.sim2.phoneNumber.length > 3 && !phone.sim2.usedServices.includes(chosenService) && !phone.sim2.usedServices.includes("all")) {
-      chosenPhone = { sim: 'sim2', phoneName: phone.phone }
-    }
-  }
-  if (chosenPhone === '') {
-    throw new Error('no service available');
-  }
-  if (chosenPhone.sim === 'sim1') {
-    await allPhoneInfo.updateOne( { "phone" : chosenPhone.phoneName }, { $push: { 'sim1.usedServices' : chosenService } })
-  } else {
-    await allPhoneInfo.updateOne( { "phone" : chosenPhone.phoneName }, { $push: { 'sim2.usedServices' : chosenService } })
-  }
-
-  const firstMessage = {
-    sender: 'dgoon',
-    timestamp: Date.now(),
-    message: `Hi Friend. You should see the number for your service rental to the right. If you have any questions or need anything, shoot 
-    me a message here. You can also check on your order here: ` + getCheckOrderLink(orderInfo.metadata.numberArray)
-  }
-  const docInfo = {
-    passphrase: orderInfo.metadata.numberArray,
-    allOrderInformation: {
-      paymentInfo,
-      orderInfo
-    },
-    customerChat: [ firstMessage ],
-    chosenPhone
-
-  }
-  const doc = docInfo
-  await collection.insertOne(doc)
-  return true
-}
 function getCheckOrderLink(numberArray){
   const wordListFinal = numberArrayToWordArray(numberArray)
-  const link = 'https://phantomphone.app/login#' + wordListFinal.join(',')
+  const link = 'https://peer.anonshop.app/login#' + wordListFinal.join(',')
   return link
 }
 function numberArrayToWordArray (numberArray) {
