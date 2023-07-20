@@ -29,7 +29,7 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-    console.log(orderInfo.timestamp)
+    console.log(orderInfo.metadata.timestamp)
     // less than 24 hours old
     if ((Date.now() - orderInfo.timestamp) > 86400000 || orderInfo.status !== 'Settled') {
       return {
