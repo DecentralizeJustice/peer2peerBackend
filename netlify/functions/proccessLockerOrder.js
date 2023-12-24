@@ -7,12 +7,12 @@ const { MongoClient, ServerApiVersion } = require('mongodb')
 const hri = require('human-readable-ids').hri
 const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
 const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
-const fs = require('fs')
-const path = require("path")
-const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
-const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
+//const fs = require('fs')
+//const path = require("path")
+//const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
+//const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
-const collection = client.db("orders").collection("lockerOrders")
+const collection = client.db("orders").collection("genOrders")
 
 exports.handler = async (event) => {
     try {
@@ -27,7 +27,7 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-    // less than 24 hours old
+    // less than 24 hours old, not sure if its needed for security
     if ((Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || orderInfo.status !== 'Settled') {
       console.log('invoice is too old or not settled')
       return {
@@ -46,6 +46,7 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     await delete orderInfo.storeId
+    // checks if invoice exist already
     const exist = await collection.findOne( { invoiceId: invoiceId })
     if(exist !== null){
       console.log('error: "invoice already exist"')
@@ -53,24 +54,24 @@ exports.handler = async (event) => {
     }
 
     const firstMessage = {
-      sender: 'dgoon',
+      sender: 'Admin DGoon',
       timestamp: Date.now(),
-      message: `Hi Friend.  I will approve your order within 24 hours and it will go to our orderbook. 
+      message: `Hi Shopper! Your order is waiting for an earner to pick it up.
       You can send me a message here if you have any questions or need to change your order. 
-      You also must check on your order every other day.
-      You can check on your order using this link: ` + getCheckOrderLink(orderInfo.metadata.info.passphraseArray)
+      You should check on your order every other day.
+      You can bookmark this page to check on your order later.`
     }
 
     const docInfo = {
-      orderId: hri.random(),
+      orderId: hri.random() +'-'+ hri.random(),
       invoiceId: invoiceId,
       shopperPassphrase: orderInfo.metadata.info.passphraseArray.toString(),
       allOrderInformation: {
         paymentInfo,
         orderInfo
       },
-      status: ['pending approval'],
-      shopperChat: [ firstMessage ],
+      status: ['pending earner pickup'],
+      chat: [ firstMessage ],
     }
     await collection.insertOne(docInfo)
     return {
@@ -87,7 +88,7 @@ exports.handler = async (event) => {
 }
 
 
-function getCheckOrderLink(numberArray){
+/* function getCheckOrderLink(numberArray){
   const wordListFinal = numberArrayToWordArray(numberArray)
   const link = 'https://peer.anonshop.app/login#' + wordListFinal.join(',')
   return link
@@ -101,4 +102,4 @@ function numberArrayToWordArray (numberArray) {
     wordArray.push(wordToAdd.replace(/(\r\n|\n|\r)/gm, ""))
   }
   return wordArray
-}
+} */
