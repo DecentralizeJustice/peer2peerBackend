@@ -28,7 +28,7 @@ exports.handler = async (event) => {
       ) 
     const orderInfo = infoRequest.data
     // less than 24 hours old, not sure if its needed for security
-    if ((Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || orderInfo.status !== 'Settled') {
+    if (orderInfo.status !== 'Settled') { // (Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || 
       console.log('invoice is too old or not settled')
       return {
         statusCode: 500,
