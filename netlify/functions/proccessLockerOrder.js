@@ -27,7 +27,6 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-    // less than 24 hours old
     if ((Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || orderInfo.status !== 'Settled') { //  
       console.log('invoice is too old or not settled')
       return {
@@ -46,7 +45,6 @@ exports.handler = async (event) => {
     ) 
     const paymentInfo = paymentRequest.data
     await delete orderInfo.storeId
-    // checks if invoice exist already
     const exist = await collection.findOne( { invoiceId: invoiceId })
     if(exist !== null){
       console.log('error: "invoice already exist"')
