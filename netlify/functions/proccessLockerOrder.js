@@ -56,20 +56,30 @@ exports.handler = async (event) => {
       timestamp: Date.now(),
       message: `Hi Shopper! Your order is waiting for an earner to pick it up.
       You can send me a message here if you have any questions or need to change your order. 
-      You should check on your order every other day.
+      You should check on your order once every 3 days.
       You can bookmark this page to check on your order later.`
     }
 
     const docInfo = {
-      orderId: hri.random() +'-'+ hri.random(),
-      invoiceId: invoiceId,
-      shopperPassphrase: orderInfo.metadata.info.passphraseArray.toString(),
-      allOrderInformation: {
-        paymentInfo,
-        orderInfo
+      metaData: {
+        type: 'giftregistry',
+        currency: 'xmr',
+        status: ['pending earner pickup'],
+        shopperPassphrase: orderInfo.metadata.info.passphraseArray.toString()
+      }
+      orderDetails: {
+        orderId: hri.random() +'-'+ hri.random(),
+        invoiceId: invoiceId,
+        allOrderInformation: {
+          paymentInfo,
+          orderInfo
+        }
       },
-      status: ['pending earner pickup'],
-      chat: [ firstMessage ],
+      chats: {
+        shopperChat: [ firstMessage ],
+        earnerChat: [],
+        everyoneChat: []
+      }
     }
     await collection.insertOne(docInfo)
     return {
