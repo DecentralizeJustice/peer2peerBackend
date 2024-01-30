@@ -66,7 +66,7 @@ exports.handler = async (event) => {
         currency: 'xmr',
         status: ['pending earner pickup'],
         shopperPassphrase: orderInfo.metadata.info.passphraseArray.toString()
-      }
+      },
       orderDetails: {
         orderId: hri.random() +'-'+ hri.random(),
         invoiceId: invoiceId,
