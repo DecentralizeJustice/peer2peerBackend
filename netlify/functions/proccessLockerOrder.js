@@ -51,41 +51,51 @@ exports.handler = async (event) => {
       return {statusCode: 500, body: '' }
     }
 
-    const firstMessage = {
-      sender: 'Admin DGoon',
-      timestamp: Date.now(),
-      message: `Hi Shopper! Your order is waiting for an earner to pick it up.
-      You can send me a message here if you have any questions or need to change your order. 
-      You should check on your order once every 3 days.
-      You can bookmark this page to check on your order later.`
-    }
 
-    const docInfo = {
-      metaData: {
-        type: 'giftregistry',
-        currency: 'xmr',
-        status: ['pending earner pickup'],
-        shopperPassphrase: orderInfo.metadata.info.passphraseArray.toString()
-      },
-      orderDetails: {
-        orderId: hri.random() +'-'+ hri.random(),
-        invoiceId: invoiceId,
-        allOrderInformation: {
-          paymentInfo,
-          orderInfo
+    if(orderInfo.metadata.type = 'placeBudgetOrder'){
+      const firstMessage = {
+        sender: 'Admin DGoon',
+        timestamp: Date.now(),
+        message: `Hi Shopper! Your order is waiting for an earner to pick it up.
+        You can send me a message here if you have any questions or need to change your order. 
+        You should check on your order once every 3 days.
+        You can bookmark this page to check on your order later.`
+      }
+      const docInfo = {
+        metaData: {
+          type: 'giftregistry',
+          currency: 'xmr',
+          status: ['pending earner pickup'],
+          shopperPassphrase: orderInfo.metadata.info.passphraseArray.toString()
+        },
+        orderDetails: {
+          orderId: hri.random() +'-'+ hri.random(),
+          invoiceId: invoiceId,
+          allOrderInformation: {
+            paymentInfo,
+            orderInfo
+          }
+        },
+        chats: {
+          shopperChat: [ firstMessage ],
+          earnerChat: [],
+          everyoneChat: []
         }
-      },
-      chats: {
-        shopperChat: [ firstMessage ],
-        earnerChat: [],
-        everyoneChat: []
+      }
+      await collection.insertOne(docInfo)
+      return {
+        statusCode: 200,
+        body: ''
       }
     }
-    await collection.insertOne(docInfo)
-    return {
-      statusCode: 200,
-      body: ''
+
+    if(orderInfo.metadata.type = 'pickupOrder'){
+      return {
+        statusCode: 200,
+        body: ''
+      }
     }
+
     } catch (error) {
       console.log(error)
       return {
