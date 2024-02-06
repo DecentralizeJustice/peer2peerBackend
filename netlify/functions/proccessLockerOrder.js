@@ -52,7 +52,7 @@ exports.handler = async (event) => {
     }
 
     console.log(orderInfo.metadata.type)
-    if(orderInfo.metadata.type = 'placeBudgetOrder'){
+    if(orderInfo.metadata.type === 'placeBudgetOrder'){
       const firstMessage = {
         sender: 'Admin DGoon',
         timestamp: Date.now(),
@@ -89,7 +89,7 @@ exports.handler = async (event) => {
       }
     }
 
-    if(orderInfo.metadata.type = 'pickUpOrder'){
+    if(orderInfo.metadata.type === 'pickUpOrder'){
       console.log('pickuporder')
       return {
         statusCode: 200,
