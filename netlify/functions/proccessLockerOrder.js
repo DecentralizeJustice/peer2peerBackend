@@ -89,7 +89,8 @@ exports.handler = async (event) => {
       }
     }
 
-    if(orderInfo.metadata.type = 'pickupOrder'){
+    if(orderInfo.metadata.type = 'pickUpOrder'){
+      console.log('pickuporder')
       return {
         statusCode: 200,
         body: ''
