@@ -51,7 +51,7 @@ exports.handler = async (event) => {
       return {statusCode: 500, body: '' }
     }
 
-
+    console.log(orderInfo.metadata.type)
     if(orderInfo.metadata.type = 'placeBudgetOrder'){
       const firstMessage = {
         sender: 'Admin DGoon',
