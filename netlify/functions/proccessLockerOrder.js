@@ -110,10 +110,17 @@ exports.handler = async (event) => {
      {
       $set: {
         "chats.earnerChat": [earnerfirstMessage],
-        "chats.everyoneChat": [everyOnefirstMessage]
-      }
+        "chats.everyoneChat": [everyOnefirstMessage],
+        "metaData.earnerPassphrase": orderInfo.metadata.indo.passphraseArray.toString(),
+        "earnerInfo": orderInfo,
+      },
+      $push: {
+        "metaData.status": {
+           $each: [ 'earner picked up' ],
+           $position: 0
+        }
+     }
     })
-     console.log(orderInfo)
       return {
         statusCode: 200,
         body: ''
