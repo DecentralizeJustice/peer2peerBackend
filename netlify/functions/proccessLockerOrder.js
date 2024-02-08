@@ -121,11 +121,16 @@ exports.handler = async (event) => {
         }
      }
     })
-    console.log(process)
+    if(process.value){
+      console.log('error: "order all ready taken"')
+      return {statusCode: 500, body: '' }
+    } else{
       return {
         statusCode: 200,
         body: ''
       }
+    }
+      
     }
 
     } catch (error) {
