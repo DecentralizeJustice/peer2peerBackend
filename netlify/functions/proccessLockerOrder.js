@@ -90,12 +90,8 @@ exports.handler = async (event) => {
 
     if(orderInfo.metadata.type === 'pickUpOrder'){
       console.log(orderInfo.metadata.info.orderId)
-      const info = await collection.findOne({
-         $and: [
-         {'orderDetails.orderId': { $eq: "orderInfo.metadata.info.orderId" }}
-         ]
-      })
-      console.log(info)
+      const info = await collection.findOne({ 'orderDetails.orderId': orderInfo.metadata.info.orderId })
+      console.log(info.toArray())
       return {
         statusCode: 200,
         body: ''
