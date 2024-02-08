@@ -89,14 +89,27 @@ exports.handler = async (event) => {
     }
 
     if(orderInfo.metadata.type === 'pickUpOrder'){
-/*       const correctOrder = await collection.findOne({ 'orderDetails.orderId': orderInfo.metadata.info.orderId })
-      console.log(correctOrder) */
-      const info = await collection.findOne({
+      const earnerfirstMessage = {
+        sender: 'Admin DGoon',
+        timestamp: Date.now(),
+        message: `Hi Earner! You should see the order details and place the order as soon as you can. You chat with the me (the admin
+          in this chat. You can use the other chat to talk to the shopper. If you have any issues please reach out to me here.`
+      }
+
+      const info = await collection.findOneAndUpdate({
         $and: [
         {'metaData.status.0': { $eq: "pending earner pickup" }},
         {'orderDetails.orderId': { $eq: orderInfo.metadata.info.orderId }}
         ]
-     })
+     },
+     {
+      $set: {
+        // item: "ABC123",
+        "chats.earnerChat": [earnerfirstMessage],
+/*         tags: [ "software" ],
+        "ratings.1": { by: "xyz", rating: 3 } */
+      }
+    })
      console.log(info)
       return {
         statusCode: 200,
