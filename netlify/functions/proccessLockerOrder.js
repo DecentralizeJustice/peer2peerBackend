@@ -95,6 +95,7 @@ exports.handler = async (event) => {
          {'orderDetails.orderId': { $eq: "orderInfo.metadata.info.orderId" }}
          ]
       })
+      console.log(info)
       return {
         statusCode: 200,
         body: ''
