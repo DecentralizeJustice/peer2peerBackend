@@ -95,6 +95,11 @@ exports.handler = async (event) => {
         message: `Hi Earner! You should see the order details and place the order as soon as you can. You chat with the me (the admin
           in this chat. You can use the other chat to talk to the shopper. If you have any issues please reach out to me here.`
       }
+      const everyOnefirstMessage = {
+        sender: 'Admin DGoon',
+        timestamp: Date.now(),
+        message: `Hi Everyone! You two can talk about the order here.`
+      }
 
       const info = await collection.findOneAndUpdate({
         $and: [
@@ -104,13 +109,11 @@ exports.handler = async (event) => {
      },
      {
       $set: {
-        // item: "ABC123",
         "chats.earnerChat": [earnerfirstMessage],
-/*         tags: [ "software" ],
-        "ratings.1": { by: "xyz", rating: 3 } */
+        "chats.everyoneChat": [everyOnefirstMessage]
       }
     })
-     console.log(info)
+     console.log(orderInfo)
       return {
         statusCode: 200,
         body: ''
