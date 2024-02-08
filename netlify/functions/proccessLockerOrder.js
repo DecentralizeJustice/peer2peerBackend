@@ -101,7 +101,7 @@ exports.handler = async (event) => {
         message: `Hi Everyone! You two can talk about the order here.`
       }
 
-      await collection.findOneAndUpdate({
+      const process = await collection.findOneAndUpdate({
         $and: [
         {'metaData.status.0': { $eq: "pending earner pickup" }},
         {'orderDetails.orderId': { $eq: orderInfo.metadata.info.orderId }}
@@ -121,6 +121,7 @@ exports.handler = async (event) => {
         }
      }
     })
+    console.log(process)
       return {
         statusCode: 200,
         body: ''
