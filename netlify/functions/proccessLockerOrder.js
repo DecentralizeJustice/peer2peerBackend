@@ -121,7 +121,8 @@ exports.handler = async (event) => {
         }
      }
     })
-    if(process.value){
+    console.log(process.value)
+    if(process.value === null){
       console.log('error: "order all ready taken"')
       return {statusCode: 500, body: '' }
     } else{
