@@ -89,7 +89,7 @@ exports.handler = async (event) => {
     }
 
     if(orderInfo.metadata.type === 'pickUpOrder'){
-      console.log(orderInfo.metadata)
+      console.log(orderInfo.metadata.info.orderId)
       /* const collection = client.db("orders").collection("genOrders")
       const info = await collection.find({
          $and: [
