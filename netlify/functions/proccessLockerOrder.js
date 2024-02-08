@@ -89,9 +89,15 @@ exports.handler = async (event) => {
     }
 
     if(orderInfo.metadata.type === 'pickUpOrder'){
-      console.log(orderInfo.metadata.info.orderId)
-      const info = await collection.findOne({ 'orderDetails.orderId': orderInfo.metadata.info.orderId })
-      console.log(info)
+/*       const correctOrder = await collection.findOne({ 'orderDetails.orderId': orderInfo.metadata.info.orderId })
+      console.log(correctOrder) */
+      const info = await collection.findOne({
+        $and: [
+        {'metaData.status.0': { $eq: "pending earner pickup" }},
+        {'orderDetails.orderId': { $eq: orderInfo.metadata.info.orderId }}
+        ]
+     })
+     console.log(info)
       return {
         statusCode: 200,
         body: ''
