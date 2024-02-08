@@ -90,13 +90,11 @@ exports.handler = async (event) => {
 
     if(orderInfo.metadata.type === 'pickUpOrder'){
       console.log(orderInfo.metadata.info.orderId)
-      /* const collection = client.db("orders").collection("genOrders")
-      const info = await collection.find({
+      const info = await collection.findOne({
          $and: [
-         {'metaData.status.0': { $eq: "pending earner pickup" }},
-         {'metaData.type': { $eq: "giftregistry" }}
+         {'orderDetails.orderId': { $eq: "orderInfo.metadata.info.orderId" }}
          ]
-      }).toArray() */
+      })
       return {
         statusCode: 200,
         body: ''
