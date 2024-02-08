@@ -27,13 +27,13 @@ exports.handler = async (event) => {
         }
       ) 
     const orderInfo = infoRequest.data
-/*     if ((Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || orderInfo.status !== 'Settled') { //  
+     if ((Date.now() - Number(orderInfo.metadata.timestamp)) > 86400000 || orderInfo.status !== 'Settled') { //  
       console.log('invoice is too old or not settled')
       return {
         statusCode: 500,
         body: ''
       }
-    } */
+    }
     const paymentRequest = await axios.get(
       storeAddress + invoiceId + `/payment-methods`,
       {
@@ -121,7 +121,6 @@ exports.handler = async (event) => {
         }
      }
     })
-    console.log(process.value)
     if(process.value === null){
       console.log('error: "order all ready taken"')
       return {statusCode: 500, body: '' }
@@ -130,10 +129,8 @@ exports.handler = async (event) => {
         statusCode: 200,
         body: ''
       }
+    } 
     }
-      
-    }
-
     } catch (error) {
       console.log(error)
       return {
