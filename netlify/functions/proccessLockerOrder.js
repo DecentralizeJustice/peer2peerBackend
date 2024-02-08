@@ -111,7 +111,7 @@ exports.handler = async (event) => {
       $set: {
         "chats.earnerChat": [earnerfirstMessage],
         "chats.everyoneChat": [everyOnefirstMessage],
-        "metaData.earnerPassphrase": orderInfo.metadata.indo.passphraseArray.toString(),
+        "metaData.earnerPassphrase": orderInfo.metadata.info.passphraseArray.toString(),
         "earnerInfo": orderInfo,
       },
       $push: {
