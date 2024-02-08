@@ -101,7 +101,7 @@ exports.handler = async (event) => {
         message: `Hi Everyone! You two can talk about the order here.`
       }
 
-      const info = await collection.findOneAndUpdate({
+      await collection.findOneAndUpdate({
         $and: [
         {'metaData.status.0': { $eq: "pending earner pickup" }},
         {'orderDetails.orderId': { $eq: orderInfo.metadata.info.orderId }}
