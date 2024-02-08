@@ -51,14 +51,13 @@ exports.handler = async (event) => {
       return {statusCode: 500, body: '' }
     }
 
-    console.log(orderInfo.metadata.type)
     if(orderInfo.metadata.type === 'placeBudgetOrder'){
       const firstMessage = {
         sender: 'Admin DGoon',
         timestamp: Date.now(),
         message: `Hi Shopper! Your order is waiting for an earner to pick it up.
         You can send me a message here if you have any questions or need to change your order. 
-        You should check on your order once every 3 days.
+        You should check on your order regularly.
         You can bookmark this page to check on your order later.`
       }
       const docInfo = {
@@ -90,7 +89,14 @@ exports.handler = async (event) => {
     }
 
     if(orderInfo.metadata.type === 'pickUpOrder'){
-      console.log('pickuporder')
+      console.log(orderInfo.metadata)
+      /* const collection = client.db("orders").collection("genOrders")
+      const info = await collection.find({
+         $and: [
+         {'metaData.status.0': { $eq: "pending earner pickup" }},
+         {'metaData.type': { $eq: "giftregistry" }}
+         ]
+      }).toArray() */
       return {
         statusCode: 200,
         body: ''
