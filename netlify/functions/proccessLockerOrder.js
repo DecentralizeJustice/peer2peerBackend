@@ -58,7 +58,7 @@ exports.handler = async (event) => {
         message: `Hi Shopper! Your order is waiting for an earner to pick it up.
         You can send me a message here if you have any questions or need to change your order. 
         You should check on your order regularly.
-        You can bookmark this page to check on your order later.`
+        You can bookmark this page to check on your order later, also here is a link for your order: ${getCheckOrderLink(orderInfo.metadata.info.passphraseArray.toString())}`
       }
       const docInfo = {
         metaData: {
@@ -141,11 +141,12 @@ exports.handler = async (event) => {
 }
 
 
-/* function getCheckOrderLink(numberArray){
+function getCheckOrderLink(numberArray){
   const wordListFinal = numberArrayToWordArray(numberArray)
-  const link = 'https://peer.anonshop.app/login#' + wordListFinal.join(',')
+  const link = 'https://anonshop.app/login#' + wordListFinal.join(',')
   return link
 }
+
 function numberArrayToWordArray (numberArray) {
   const wordArray = []
   const splitNumberArray = numberArray
@@ -155,4 +156,4 @@ function numberArrayToWordArray (numberArray) {
     wordArray.push(wordToAdd.replace(/(\r\n|\n|\r)/gm, ""))
   }
   return wordArray
-} */
+}
