@@ -58,8 +58,9 @@ exports.handler = async (event) => {
         message: `Hi Shopper! Your order is waiting for an earner to pick it up.
         You can send me a message here if you have any questions or need to change your order. 
         You should check on your order regularly.
-        You can bookmark this page to check on your order later, also here is a link for your order: ${getCheckOrderLink(orderInfo.metadata.info.passphraseArray.toString())}`
+        You can bookmark this page to check on your order later, also here is a link for your order: ${getCheckOrderLink(orderInfo.metadata.info.passphraseArray)}`
       }
+      console.log(orderInfo.metadata.info.passphraseArray)
       const docInfo = {
         metaData: {
           type: 'giftregistry',
