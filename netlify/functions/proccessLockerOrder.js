@@ -7,10 +7,10 @@ const { MongoClient, ServerApiVersion } = require('mongodb')
 const hri = require('human-readable-ids').hri
 const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
 const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
-//const fs = require('fs')
-//const path = require("path")
-//const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
-//const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
+const fs = require('fs')
+const path = require("path")
+const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
+const words = fs.readFileSync(pathWordlist, 'utf8').toString().split("\n")
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 })
 const collection = client.db("orders").collection("genOrders")
 
