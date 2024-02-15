@@ -60,7 +60,11 @@ exports.handler = async (event) => {
         You should check on your order regularly.
         You can bookmark this page to check on your order later, also here is a link for your order: ${getCheckOrderLink(orderInfo.metadata.info.passphraseArray)}`
       }
-      console.log(orderInfo.metadata.info.passphraseArray)
+      const firstEveryoneMessage = {
+        sender: 'Admin DGoon',
+        timestamp: Date.now(),
+        message: `Hi Everyone! Messages in this chat can be seen by everyone. This is were most updates about the order will go. If you have an issue or need an admin, you should use the other chat.`
+      }
       const docInfo = {
         metaData: {
           type: 'giftregistry',
@@ -79,7 +83,7 @@ exports.handler = async (event) => {
         chats: {
           shopperChat: [ firstMessage ],
           earnerChat: [],
-          everyoneChat: []
+          everyoneChat: [firstEveryoneMessage]
         }
       }
       await collection.insertOne(docInfo)
