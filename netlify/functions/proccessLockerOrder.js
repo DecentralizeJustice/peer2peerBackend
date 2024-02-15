@@ -100,12 +100,6 @@ exports.handler = async (event) => {
         message: `Hi Earner! You should see the order details and place the order as soon as you can. You chat with the me (the admin
           in this chat. You can use the other chat to talk to the shopper. If you have any issues please reach out to me here.`
       }
-      const everyOnefirstMessage = {
-        sender: 'Admin DGoon',
-        timestamp: Date.now(),
-        message: `Hi Everyone! You two can talk about the order here.`
-      }
-
       const process = await collection.findOneAndUpdate({
         $and: [
         {'metaData.status.0': { $eq: "pending earner pickup" }},
@@ -115,7 +109,6 @@ exports.handler = async (event) => {
      {
       $set: {
         "chats.earnerChat": [earnerfirstMessage],
-        "chats.everyoneChat": [everyOnefirstMessage],
         "metaData.earnerPassphrase": orderInfo.metadata.info.passphraseArray.toString(),
         "earnerInfo": orderInfo,
       },
