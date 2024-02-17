@@ -140,7 +140,7 @@ exports.handler = async (event) => {
 
 function getCheckOrderLink(numberArray){
   const wordListFinal = numberArrayToWordArray(numberArray)
-  const link = 'https://anonshop.app/login#' + wordListFinal.join(',')
+  const link = 'https://peershop.app/login#' + wordListFinal.join(',')
   return link
 }
 
