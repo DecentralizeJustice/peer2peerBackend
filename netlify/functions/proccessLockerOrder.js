@@ -96,8 +96,8 @@ exports.handler = async (event) => {
       const earnerfirstMessage = {
         sender: 'Admin DGoon',
         timestamp: Date.now(),
-        message: `Hi Earner! You should see the order details and place the order as soon as you can. You chat with the me (the admin
-          in this chat. You can use the other chat to talk to the shopper. If you have any issues please reach out to me here.`
+        message: `Hi Earner! You should see the order details and place the order as soon as you can. You chat with the me (the admin)
+          in this chat. You can use the other chat to talk to the shopper. If you have any issues please reach out to me here. Here is a link to login and check your order:${getCheckOrderLink(orderInfo.metadata.info.passphraseArray)} `
       }
       const everyoneMessage = {
         sender: 'Admin DGoon',
