@@ -102,8 +102,7 @@ exports.handler = async (event) => {
       const everyoneMessage = {
         sender: 'Admin DGoon',
         timestamp: Date.now(),
-        message: `Hi Earner! You should see the order details and place the order as soon as you can. You chat with the me (the admin
-          in this chat. You can use the other chat to talk to the shopper. If you have any issues please reach out to me here.`
+        message: `Hi. This order has been picked up by an earner. It should be updated soon!`
       }
       const process = await collection.findOneAndUpdate({
         $and: [
@@ -122,7 +121,7 @@ exports.handler = async (event) => {
            $each: [ 'earner picked up' ],
            $position: 0
         },
-        "chats.everyoneChat": [ everyoneMessage ]
+        "chats.everyoneChat": everyoneMessage 
      }
     })
     if(process.value === null){
