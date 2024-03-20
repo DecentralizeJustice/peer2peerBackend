@@ -6,7 +6,7 @@ const mongoServerLocation = process.env.mongoServerLocation
 const { MongoClient, ServerApiVersion } = require('mongodb')
 const hri = require('human-readable-ids').hri
 const uri = "mongodb+srv://main:" + mongoDBPassword + "@"+ mongoServerLocation + "/?retryWrites=true&w=majority"
-const storeAddress = 'https://btcpay.anonshop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
+const storeAddress = 'https://btcpay.peershop.app/api/v1/stores/' + BTCpayStore + '/invoices/'
 const fs = require('fs')
 const path = require("path")
 const pathWordlist = path.resolve(__dirname + "/bip39Wordlist.txt")
